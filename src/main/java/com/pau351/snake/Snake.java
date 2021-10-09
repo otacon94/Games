@@ -16,6 +16,7 @@ public class Snake extends JFrame {
         public static final int SPEED_MODE = 60;
         public static final int INITIAL_PIECES = 5;
         public static final int APPLE_SCORE = 20;
+        public static final String GAMEOVER = "GAMEOVER";
         public static final String TITLE = "SNAKE GAME - SCORE %S";
 
         private enum Direction {UP, DOWN, LEFT, RIGHT}
@@ -144,7 +145,9 @@ public class Snake extends JFrame {
                 Font f = new Font("Helvetica", Font.BOLD, 25);
                 g.setFont(f);
                 g.setColor(Color.white);
-                g.drawString("GAMEOVER", dimx, dimy);
+                g.drawString(GAMEOVER,
+                        (getWidth()/2)-(g.getFontMetrics().stringWidth(GAMEOVER)/2),
+                        getHeight()/2);
                 g.dispose();
             }
         }
