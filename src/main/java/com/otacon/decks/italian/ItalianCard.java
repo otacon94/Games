@@ -44,6 +44,8 @@ public class ItalianCard {
                     return this.numericValue+"";
             }
         }
+
+        public int getNumericValue() { return numericValue; }
     }
 
     private Type type;

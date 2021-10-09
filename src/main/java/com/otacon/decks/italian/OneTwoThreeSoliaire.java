@@ -1,4 +1,7 @@
-package italiandeck;
+package com.otacon.decks.italian;
+
+import com.otacon.decks.italian.ItalianCard;
+import com.otacon.decks.italian.ItalianDeck;
 
 import java.util.NoSuchElementException;
 
@@ -35,7 +38,7 @@ public class OneTwoThreeSoliaire {
         currentCount += 1;
         try {
             ItalianCard card = deck.pull();
-            if (card.getValue().numericValue == currentCount) {
+            if (card.getValue().getNumericValue() == currentCount) {
                 endGame = true;
                 win = false;
             }
