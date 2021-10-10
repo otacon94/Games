@@ -17,13 +17,15 @@ public class Snake extends JFrame {
         public static final int TILE_SIZE = 10;
 
         public static final int RAT_SIZE = 8;
-        public static final int RAT_SPEED = 120;
         public static final int RAT_MIN_DIRECTION_CHANGE_TIME = 1000;
         public static final int RAT_MAX_DIRECTION_CHANGE_TIME = 5000;
 
         public static final int SLOW_MODE = 100;
         public static final int RAT_TIMER = 10000;
         public static final int SPEED_MODE = 60;
+
+        public static final int SNAKE_EYES_RELATIVE_DISTANCE = 3;
+        public static final int SNAKE_EYES_DIMENSION = 2;
 
         public static final int INITIAL_PIECES = 5;
 
@@ -36,13 +38,14 @@ public class Snake extends JFrame {
         public static final String RAT_COMMAND = "rat";
         public static final String RAT_MOVER_COMMAND = "ratMover";
 
-        private enum Direction {UP("UP"), DOWN("DOWN"), LEFT("LEFT"), RIGHT("RIGHT");
+        private enum Direction {
+            UP("UP"), DOWN("DOWN"), LEFT("LEFT"), RIGHT("RIGHT");
             private List<String> possibleMoves;
 
             Direction(String direction) {
                 possibleMoves = new LinkedList<>();
                 switch (direction) {
-                    case "UP" :
+                    case "UP":
                     case "DOWN":
                         possibleMoves.addAll(Arrays.asList("LEFT", "RIGHT"));
                         break;
@@ -52,9 +55,10 @@ public class Snake extends JFrame {
                 }
             }
 
-            public List<Direction> getPossibleMoves() { return Arrays.stream(Direction.values())
-                    .filter(e -> possibleMoves.contains(e.name()))
-                    .collect(Collectors.toList());
+            public List<Direction> getPossibleMoves() {
+                return Arrays.stream(Direction.values())
+                        .filter(e -> possibleMoves.contains(e.name()))
+                        .collect(Collectors.toList());
             }
 
         }
@@ -135,8 +139,8 @@ public class Snake extends JFrame {
         }
 
         private void placeApple() {
-            apple = new Point(random.nextInt(parent.getWidth() - (TILE_SIZE*2)) + TILE_SIZE,
-                    random.nextInt(parent.getHeight() - (TILE_SIZE*2)) + TILE_SIZE);
+            apple = new Point(random.nextInt(parent.getWidth() - (TILE_SIZE * 2)) + TILE_SIZE,
+                    random.nextInt(parent.getHeight() - (TILE_SIZE * 2)) + TILE_SIZE);
         }
 
         @Override
@@ -209,7 +213,7 @@ public class Snake extends JFrame {
                         }
                     }
                 }
-            } while (!snakeOverlap(ratHead) || bodyOverlap);
+            } while (snakeOverlap(ratHead) || bodyOverlap);
             ratBody.add(ratHead);
             ratBody.add(ratTail);
         }
@@ -255,7 +259,7 @@ public class Snake extends JFrame {
                     }
                     break;
             }
-        }//muovi
+        }
 
         public boolean isInGame() { return inGame; }
 
@@ -269,6 +273,9 @@ public class Snake extends JFrame {
                         color = Color.orange;
                     }
                     paintRect(g, snakeBody.get(i), color);
+                    if (i == 0) {
+                        drawEyes(g, snakeBody.get(i));
+                    }
                 }
                 if (ratAlive) {
                     for (int i = 0; i < ratBody.size(); i++) {
@@ -284,6 +291,60 @@ public class Snake extends JFrame {
                         getHeight() / 2);
             }
             g.dispose();
+        }
+
+        private void drawEyes(Graphics g, Point p) {
+            g.setColor(Color.black);
+            switch (snakeDirection){
+                case UP:
+                    //left
+                    g.drawOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    //right
+                    g.drawOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    break;
+                case DOWN:
+                    //right
+                    g.drawOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    //left
+                    g.drawOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    break;
+                case LEFT:
+                    //right
+                    g.drawOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    //left
+                    g.drawOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+(SNAKE_EYES_RELATIVE_DISTANCE/2), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    break;
+                default:
+                    //left
+                    g.drawOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+(SNAKE_EYES_RELATIVE_DISTANCE/2),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    //right
+                    g.drawOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    g.fillOval(p.x+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE), p.y+TILE_SIZE-(SNAKE_EYES_RELATIVE_DISTANCE),
+                            SNAKE_EYES_DIMENSION, SNAKE_EYES_DIMENSION);
+                    break;
+            }
         }
 
         private void paintRect(Graphics g, Point point, Color color) {
@@ -339,7 +400,8 @@ public class Snake extends JFrame {
             gameTimer.stop();
             ratTimer.stop();
             ratAlive = false;
-            ratBody.clear();
+            if (ratBody!=null)
+                ratBody.clear();
             ratMoverTimer.stop();
         }
 
