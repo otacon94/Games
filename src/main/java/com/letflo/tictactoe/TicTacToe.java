@@ -35,6 +35,7 @@ public class TicTacToe {
                     board[i + 2] == type) {
                 endGame = true;
                 winner = type;
+            }
         }
 
         // check vertical win
