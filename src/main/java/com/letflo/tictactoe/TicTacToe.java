@@ -87,6 +87,14 @@ public class TicTacToe {
         return sb.toString();
     }
 
+    public void clear() {
+        for (int i = 0; i < 9; i++) {
+            board[i] = null;
+        }
+        endGame = false;
+        winner = null;
+    }
+
     public static void main(String[] args) {
         TicTacToe ticTacToe = new TicTacToe();
         Player p1 = new Player(Player.Type.O);

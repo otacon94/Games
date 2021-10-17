@@ -20,6 +20,7 @@ public class TicTacToeGUI extends JFrame {
     private JPanel mainPanel;
 
     private TicTacToe game;
+    private PlayPanel board[][];
     private Player.Type currentPlayer;
 
     public TicTacToeGUI() {
@@ -35,6 +36,7 @@ public class TicTacToeGUI extends JFrame {
     void initializeFrame() {
         mainPanel = new CustomPanel();
         game = new TicTacToe();
+        board = new PlayPanel[3][3];
         currentPlayer = Player.Type.X;
         setTitle(String.format(CURRENT_PLAYER, currentPlayer));
 
@@ -51,7 +53,7 @@ public class TicTacToeGUI extends JFrame {
             for (int j = 0; j < 3; j++) {
                 final int pos = (i*3)+j;
                 layoutConstraints.gridy = j;
-                JPanel panel = new PlayPanel();
+                PlayPanel panel = new PlayPanel();
                 panel.addMouseListener(new MouseAdapter() {
 
                     @Override
@@ -89,8 +91,7 @@ public class TicTacToeGUI extends JFrame {
                             }
                             mainPanel.repaint();
                         } else {
-                            initializeFrame();
-                            repaint();
+                            clearBoard();
                         }
                     }
 
@@ -102,12 +103,25 @@ public class TicTacToeGUI extends JFrame {
                     }
 
                 });
+                board[i][j] = panel;
                 mainPanel.add(panel, layoutConstraints);
             }
         }
         setContentPane(mainPanel);
         mainPanel.setFocusable(true);
         mainPanel.requestFocusInWindow();
+    }
+
+    void clearBoard() {
+        game.clear();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j].setType(null);
+                board[i][j].repaint();
+            }
+        }
+        mainPanel.repaint();
+        setTitle(String.format(CURRENT_PLAYER, currentPlayer));
     }
 
     class PlayPanel extends JPanel {
