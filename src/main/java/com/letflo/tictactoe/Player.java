@@ -1,7 +1,8 @@
 package com.letflo.tictactoe;
 
 public class Player {
-    public enum Type {X, Y}
+  
+    public enum Type {X, O}
 
     Type type;
 

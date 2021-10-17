@@ -27,34 +27,43 @@ public class TicTacToe {
         board[pos] = type;
     }
 
-    public void checkWin(Player player) {
+    public void checkWin(Player.Type type) {
         // check horizontal win
         for (int i = 0; i <= 6; i += 3) {
-            if (board[i] == player.type &&
-                    board[i + 1] == player.type &&
-                    board[i + 2] == player.type) {
+            if (board[i] == type &&
+                    board[i + 1] == type &&
+                    board[i + 2] == type) {
                 endGame = true;
-                winner = player.type;
-            }
+                winner = type;
         }
 
         // check vertical win
         for (int i = 0; i <= 2; i++) {
-            if (board[i] == player.type &&
-                    board[i + 3] == player.type &&
-                    board[i + 6] == player.type) {
+            if (board[i] == type &&
+                    board[i + 3] == type &&
+                    board[i + 6] == type) {
                 endGame = true;
-                winner = player.type;
+                winner = type;
             }
         }
 
         // check diagonal win
-        if ((board[0] == player.type && board[4] == player.type && board[8] == player.type) || //up left to down right
-                (board[2] == player.type && board[4] == player.type && board[6] == player.type)) { //up right to down left
+
+        if ((board[0] == type && board[4] == type && board[8] == type) || //up left to down right
+                (board[2] == type && board[4] == type && board[6] == type)) { //up right to down left
             endGame = true;
-            winner = player.type;
+            winner = type;
         }
     }
+
+    public boolean isEndGame() { return endGame; }
+
+    public void setEndGame(boolean endGame) { this.endGame = endGame; }
+
+    public Player.Type getWinner() { return winner; }
+
+    public void setWinner(Player.Type winner) { this.winner = winner; }
+
 
     @Override
     public String toString() {
@@ -79,7 +88,7 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         TicTacToe ticTacToe = new TicTacToe();
-        Player p1 = new Player(Player.Type.Y);
+        Player p1 = new Player(Player.Type.O);
         Player p2 = new Player(Player.Type.X);
         ticTacToe.place(p2, 0);
         ticTacToe.place(p2, 1);
@@ -87,7 +96,7 @@ public class TicTacToe {
         ticTacToe.place(p1, 4);
         ticTacToe.place(p1, 5);
         System.out.println(ticTacToe);
-        ticTacToe.checkWin(p1);
+        ticTacToe.checkWin(p1.type);
         System.out.println(ticTacToe.endGame);
         System.out.println(ticTacToe.winner);
     }
