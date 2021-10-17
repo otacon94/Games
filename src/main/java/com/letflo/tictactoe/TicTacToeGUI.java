@@ -11,6 +11,7 @@ public class TicTacToeGUI extends JFrame {
     public static final Border GRAY_BORDER = BorderFactory.createLineBorder(Color.DARK_GRAY);
     public static final Border NORMAL_BORDER = new JPanel().getBorder();
     public static final String CURRENT_PLAYER = "TicTacToe - Current Player: %s";
+    public static final String WINNER_STRING = "WINNER: %s";
 
     public static final int OFFSET_X = 54;
     public static final int OFFSET_Y = 40;
@@ -51,7 +52,7 @@ public class TicTacToeGUI extends JFrame {
         for (int i = 0; i < 3; i++) {
             layoutConstraints.gridx = i;
             for (int j = 0; j < 3; j++) {
-                final int pos = (i*3)+j;
+                final int pos = (i * 3) + j;
                 layoutConstraints.gridy = j;
                 PlayPanel panel = new PlayPanel();
                 panel.addMouseListener(new MouseAdapter() {
@@ -98,7 +99,7 @@ public class TicTacToeGUI extends JFrame {
                     void checkWin() {
                         game.checkWin(currentPlayer);
                         if (game.isEndGame()) {
-                            setTitle(String.format("WINNER: %s",game.getWinner()));
+                            setTitle(String.format(WINNER_STRING, game.getWinner()));
                         }
                     }
 
@@ -145,7 +146,7 @@ public class TicTacToeGUI extends JFrame {
                     g.drawLine(20, 110, 110, 20);
                 } else {
                     g.setColor(Color.RED);
-                    g2.drawOval(20,20, 90, 90);
+                    g2.drawOval(20, 20, 90, 90);
                 }
             }
         }
@@ -164,17 +165,33 @@ public class TicTacToeGUI extends JFrame {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            g.setColor(Color.blue);
-            //draw horizontal
-            g.drawLine(OFFSET_X, OFFSET_Y + PANEL_HEIGHT,
-                    getWidth() - OFFSET_X, OFFSET_Y + PANEL_HEIGHT);
-            g.drawLine(OFFSET_X, OFFSET_Y + (PANEL_HEIGHT * 2),
-                    getWidth() - OFFSET_X, OFFSET_Y + (PANEL_HEIGHT * 2));
-            //draw vertical
-            g.drawLine(PANEL_WIDTH + OFFSET_X, OFFSET_Y,
-                    PANEL_WIDTH + OFFSET_X, (PANEL_WIDTH * 3) + OFFSET_Y);
-            g.drawLine((PANEL_WIDTH * 2) + OFFSET_X, OFFSET_Y,
-                    (PANEL_WIDTH * 2) + OFFSET_X, (PANEL_WIDTH * 3) + OFFSET_Y);
+            if (!game.isEndGame()) {
+                g.setColor(Color.blue);
+                //draw horizontal
+                g.drawLine(OFFSET_X, OFFSET_Y + PANEL_HEIGHT,
+                        getWidth() - OFFSET_X, OFFSET_Y + PANEL_HEIGHT);
+                g.drawLine(OFFSET_X, OFFSET_Y + (PANEL_HEIGHT * 2),
+                        getWidth() - OFFSET_X, OFFSET_Y + (PANEL_HEIGHT * 2));
+                //draw vertical
+                g.drawLine(PANEL_WIDTH + OFFSET_X, OFFSET_Y,
+                        PANEL_WIDTH + OFFSET_X, (PANEL_WIDTH * 3) + OFFSET_Y);
+                g.drawLine((PANEL_WIDTH * 2) + OFFSET_X, OFFSET_Y,
+                        (PANEL_WIDTH * 2) + OFFSET_X, (PANEL_WIDTH * 3) + OFFSET_Y);
+            } else {
+                Font f = new Font("Helvetica", Font.BOLD, 25);
+                g.setFont(f);
+                g.setColor(Color.black);
+                String text = String.format(WINNER_STRING, currentPlayer);
+                g.drawRect(OFFSET_X, OFFSET_Y,
+                        (PANEL_WIDTH * 3), (PANEL_HEIGHT * 3));
+                g.fillRect(OFFSET_X, OFFSET_Y,
+                        (PANEL_WIDTH * 3), (PANEL_HEIGHT * 3));
+                g.setColor(Color.white);
+                g.drawString(String.format(WINNER_STRING, currentPlayer),
+                        (getWidth() / 2) - (g.getFontMetrics().stringWidth(text) / 2),
+                        (getHeight() / 2));
+
+            }
         }
     }
 
