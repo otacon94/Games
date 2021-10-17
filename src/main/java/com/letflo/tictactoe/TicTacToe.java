@@ -35,7 +35,6 @@ public class TicTacToe {
                     board[i + 2] == type) {
                 endGame = true;
                 winner = type;
-            }
         }
 
         // check vertical win
@@ -49,6 +48,7 @@ public class TicTacToe {
         }
 
         // check diagonal win
+
         if ((board[0] == type && board[4] == type && board[8] == type) || //up left to down right
                 (board[2] == type && board[4] == type && board[6] == type)) { //up right to down left
             endGame = true;
@@ -63,6 +63,7 @@ public class TicTacToe {
     public Player.Type getWinner() { return winner; }
 
     public void setWinner(Player.Type winner) { this.winner = winner; }
+
 
     @Override
     public String toString() {
