@@ -35,6 +35,7 @@ public class TicTacToe {
                     board[i + 2] == type) {
                 endGame = true;
                 winner = type;
+            }
         }
 
         // check vertical win
@@ -84,6 +85,14 @@ public class TicTacToe {
             }
         }
         return sb.toString();
+    }
+
+    public void clear() {
+        for (int i = 0; i < 9; i++) {
+            board[i] = null;
+        }
+        endGame = false;
+        winner = null;
     }
 
     public static void main(String[] args) {
