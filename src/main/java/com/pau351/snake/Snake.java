@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class Snake extends JFrame {
 
     static class SnakePanel extends JPanel implements ActionListener {
-        public static final int TILE_SIZE = 10;
+        public static final int TILE_SIZE = 12;
 
         public static final int RAT_SIZE = 8;
         public static final int RAT_MIN_DIRECTION_CHANGE_TIME = 1000;
